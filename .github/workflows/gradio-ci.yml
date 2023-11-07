@@ -1,0 +1,24 @@
+name: Docker Gradio Image CI
+
+on:
+  push:
+    branches: [ "main", "dev", "sec" ]
+    paths:
+      - 'infrastructure/inferenceimpl/**'
+      - 'infrastructure/config/**'
+  pull_request:
+    branches: [ "main", "dev", "sec" ]
+    paths:
+      - 'infrastructure/inferenceimpl/**'
+      - 'infrastructure/config/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the gradio Docker image
+        run: cd infrastructure/inferenceimpl/image && docker build . --file Dockerfile --tag gradio:$(date +%s)

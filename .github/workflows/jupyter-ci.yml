@@ -1,0 +1,29 @@
+name: Docker Jupyter Image CI
+
+on:
+  push:
+    branches: [ "main", "dev", "sec" ]
+    paths:
+      - 'infrastructure/cloudimpl/**'
+      - 'infrastructure/config/**'
+  pull_request:
+    branches: [ "main", "dev", "sec" ]
+    paths:
+      - 'infrastructure/cloudimpl/**'
+      - 'infrastructure/config/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      -
+        uses: docker/setup-buildx-action@v3
+        name: Set up Docker Buildx
+        with:
+          version: latest
+      - uses: actions/checkout@v3
+      - name: Build the jupyter Docker image
+        run: cd infrastructure/cloudimpl/image && docker buildx build . --file Dockerfile --tag jupyter:$(date +%s)

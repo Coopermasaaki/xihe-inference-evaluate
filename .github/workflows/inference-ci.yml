@@ -1,0 +1,26 @@
+name: Docker inference Image CI
+
+on:
+  push:
+    branches: [ "main", "dev", "sec" ]
+    paths-ignore:
+      - 'infrastructure/cloudimpl/**'
+      - 'infrastructure/inferenceimpl/**'
+      - 'infrastructure/config/**'
+  pull_request:
+    branches: [ "main", "dev", "sec" ]
+    paths-ignore:
+      - 'infrastructure/cloudimpl/**'
+      - 'infrastructure/inferenceimpl/**'
+      - 'infrastructure/config/**'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the inference Docker image
+        run: docker build . --file Dockerfile --tag inference-server:$(date +%s)
